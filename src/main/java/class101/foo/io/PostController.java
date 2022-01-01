@@ -1,15 +1,21 @@
 package class101.foo.io;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class PostController {
 
-    @Autowired
-    PostRepository postRepository;
+    private static Integer PAGE_SIZE = 20;
+
+    private final PostRepository postRepository;
 
     // 1. 글을 작성한다.
     @PostMapping("/post")
@@ -17,13 +23,13 @@ public class PostController {
         return postRepository.save(post);
     }
 
-    // 2-1. 글 목록을 조회한다.
+    // 2. 글 목록을 페이징하여 반환
     @GetMapping("/posts")
-    public List<Post> getPostList() {
-        return postRepository.findAll();
+    public Page<Post> getPostList(@RequestParam(defaultValue = "1") final Integer page) {
+        return postRepository.findAll(
+                PageRequest.of(page - 1, PAGE_SIZE, Sort.by("id").descending())
+        );
     }
-    
-    // 2-2 글 목록을 페이징하여 반환
     
     // 3. 글 번호로 조회
     
