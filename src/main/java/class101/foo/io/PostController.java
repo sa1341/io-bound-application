@@ -38,5 +38,8 @@ public class PostController {
     }
 
     // 4. 글 내용으로 검색 -> 해당 내용이 포함된 모든 글
-
+    @GetMapping("/post-search")
+    public List<Post> findPostsByContent(@RequestParam final String content) {
+        return postRepository.findByContentContains(content);
+    }
 }
