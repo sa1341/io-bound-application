@@ -15,7 +15,7 @@ import java.util.List;
 @Configuration
 public class ElasticsearchConfig {
 
-    @Value("#{'spring.data.elasticsearch.hosts}'.split(',')}")
+    @Value("#{'${spring.data.elasticsearch.hosts}'.split(',')}")
     private List<String> hosts;
 
     @Value("${spring.data.elasticsearch.port}")
