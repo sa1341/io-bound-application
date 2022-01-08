@@ -1,7 +1,6 @@
 package class101.foo.io;
 
 import org.apache.http.HttpHost;
-import org.apache.http.client.methods.HttpPost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
