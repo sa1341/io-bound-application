@@ -3,6 +3,7 @@ package class101.foo.io;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,6 +26,12 @@ public class PostController {
     private final Producer producer;
     private final ObjectMapper objectMapper;
 
+    @Value("#{'${spring.data.elasticsearch.hosts}'.split(',')}")
+    private List<String> hosts;
+
+    @Value("${spring.data.elasticsearch.port}")
+    private int port;
+
     // 1. 글을 작성한다.
     @PostMapping("/post")
     public Post createPost(@RequestBody Post post) throws JsonProcessingException {
@@ -37,5 +44,12 @@ public class PostController {
     @GetMapping("/search")
     public List<Post> findPostsByContent(@RequestParam final String content) {
         return postRepository.findByContent(content);
+    }
+
+    @GetMapping("/ping")
+    public String ping() {
+        System.out.println("port: " + port);
+        hosts.forEach(h -> System.out.println(h));
+        return "pong";
     }
 }
